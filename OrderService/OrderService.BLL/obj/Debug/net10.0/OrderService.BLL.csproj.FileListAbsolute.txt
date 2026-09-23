@@ -1,0 +1,15 @@
+D:\Tests\BillingService\OrderService\OrderService.BLL\bin\Debug\net10.0\OrderService.BLL.deps.json
+D:\Tests\BillingService\OrderService\OrderService.BLL\bin\Debug\net10.0\OrderService.BLL.dll
+D:\Tests\BillingService\OrderService\OrderService.BLL\bin\Debug\net10.0\OrderService.BLL.pdb
+D:\Tests\BillingService\OrderService\OrderService.BLL\bin\Debug\net10.0\OrderService.DAL.dll
+D:\Tests\BillingService\OrderService\OrderService.BLL\bin\Debug\net10.0\OrderService.DAL.pdb
+D:\Tests\BillingService\OrderService\OrderService.BLL\obj\Debug\net10.0\OrderService.BLL.csproj.AssemblyReference.cache
+D:\Tests\BillingService\OrderService\OrderService.BLL\obj\Debug\net10.0\OrderService.BLL.GeneratedMSBuildEditorConfig.editorconfig
+D:\Tests\BillingService\OrderService\OrderService.BLL\obj\Debug\net10.0\OrderService.BLL.AssemblyInfoInputs.cache
+D:\Tests\BillingService\OrderService\OrderService.BLL\obj\Debug\net10.0\OrderService.BLL.AssemblyInfo.cs
+D:\Tests\BillingService\OrderService\OrderService.BLL\obj\Debug\net10.0\OrderService.BLL.csproj.CoreCompileInputs.cache
+D:\Tests\BillingService\OrderService\OrderService.BLL\obj\Debug\net10.0\OrderSer.E2A75019.Up2Date
+D:\Tests\BillingService\OrderService\OrderService.BLL\obj\Debug\net10.0\OrderService.BLL.dll
+D:\Tests\BillingService\OrderService\OrderService.BLL\obj\Debug\net10.0\refint\OrderService.BLL.dll
+D:\Tests\BillingService\OrderService\OrderService.BLL\obj\Debug\net10.0\OrderService.BLL.pdb
+D:\Tests\BillingService\OrderService\OrderService.BLL\obj\Debug\net10.0\ref\OrderService.BLL.dll

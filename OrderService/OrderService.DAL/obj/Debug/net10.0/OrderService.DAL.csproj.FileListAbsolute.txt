@@ -1,0 +1,12 @@
+D:\Tests\BillingService\OrderService\OrderService.DAL\bin\Debug\net10.0\OrderService.DAL.deps.json
+D:\Tests\BillingService\OrderService\OrderService.DAL\bin\Debug\net10.0\OrderService.DAL.dll
+D:\Tests\BillingService\OrderService\OrderService.DAL\bin\Debug\net10.0\OrderService.DAL.pdb
+D:\Tests\BillingService\OrderService\OrderService.DAL\obj\Debug\net10.0\OrderService.DAL.csproj.AssemblyReference.cache
+D:\Tests\BillingService\OrderService\OrderService.DAL\obj\Debug\net10.0\OrderService.DAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\Tests\BillingService\OrderService\OrderService.DAL\obj\Debug\net10.0\OrderService.DAL.AssemblyInfoInputs.cache
+D:\Tests\BillingService\OrderService\OrderService.DAL\obj\Debug\net10.0\OrderService.DAL.AssemblyInfo.cs
+D:\Tests\BillingService\OrderService\OrderService.DAL\obj\Debug\net10.0\OrderService.DAL.csproj.CoreCompileInputs.cache
+D:\Tests\BillingService\OrderService\OrderService.DAL\obj\Debug\net10.0\OrderService.DAL.dll
+D:\Tests\BillingService\OrderService\OrderService.DAL\obj\Debug\net10.0\refint\OrderService.DAL.dll
+D:\Tests\BillingService\OrderService\OrderService.DAL\obj\Debug\net10.0\OrderService.DAL.pdb
+D:\Tests\BillingService\OrderService\OrderService.DAL\obj\Debug\net10.0\ref\OrderService.DAL.dll

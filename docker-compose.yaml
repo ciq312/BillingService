@@ -1,0 +1,50 @@
+services:
+  order-service:
+    container_name: order-service
+    build:
+      context: OrderService
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8080
+  payment-service:
+    container_name: payment-service
+    build:
+      context: PaymentService
+      dockerfile: Dockerfile  
+    ports: 
+      - "8080:8080"
+  broker:
+    image: rabbitmq:4.3.6-management
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=rmuser
+      - RABBITMQ_DEFAULT_PASS=rmpassword
+  paymentDb:
+    image: postgres:15
+    volumes:
+      - payment_data:/var/lib/postgresql/data  
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSRGRES_DATABASE=database
+  orderDb:
+    image: postgres:15
+    volumes:
+      - order_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5434"  
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSRGRES_DATABASE=database
+volumes:
+  order_data:
+  payment_data:
+  rabbitmq:
