@@ -1,0 +1,42 @@
+services:
+  broker:
+    image: rabbitmq:4.3.6-management
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+  paymentDb:
+    image: postgres:15
+    volumes:
+      - payment_data:/var/lib/postgresql/data  
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    env_file:
+      - .env
+  orderDb:
+    image: postgres:15
+    volumes:
+      - order_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"  
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    env_file:
+      - .env
+volumes:
+  order_data:
+  payment_data:
+  rabbitmq:

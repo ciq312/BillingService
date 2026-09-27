@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+  <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\OrderService.DAL\OrderService.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
