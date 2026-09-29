@@ -2,17 +2,34 @@ services:
   order-service:
     container_name: order-service
     build:
-      context: OrderService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: OrderService/Dockerfile
     ports:
       - 8081:8080
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=orderDb;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - RabbitMq__Host=broker
+      - RabbitMq__Username=${RABBITMQ_USER}
+      - RabbitMq__Password=${RABBITMQ_PASS}
+    depends_on:
+      orderDb:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
   payment-service:
     container_name: payment-service
     build:
-      context: PaymentService
-      dockerfile: Dockerfile  
-    ports: 
-      - "8080:8080"
+      context: .
+      dockerfile: PaymentService/Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - RabbitMq__Host=broker
+      - RabbitMq__Username=${RABBITMQ_USER}
+      - RabbitMq__Password=${RABBITMQ_PASS}
+    depends_on:
+      broker:
+        condition: service_healthy
   broker:
     image: rabbitmq:4.3.6-management
     volumes:
@@ -22,28 +39,38 @@ services:
       - 5672:5672
     restart: always
     environment:
-      - RABBITMQ_DEFAULT_USER=rmuser
-      - RABBITMQ_DEFAULT_PASS=rmpassword
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
   paymentDb:
     image: postgres:15
     volumes:
-      - payment_data:/var/lib/postgresql/data  
+      - payment_data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - 5433:5432
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSRGRES_DATABASE=database
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
   orderDb:
     image: postgres:15
     volumes:
       - order_data:/var/lib/postgresql/data
     ports:
-      - "5434:5434"  
+      - 5434:5432
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSRGRES_DATABASE=database
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 volumes:
   order_data:
   payment_data:

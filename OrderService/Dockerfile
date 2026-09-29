@@ -1,18 +1,18 @@
+# Build context is the repository root (Contracts is shared between services)
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
+COPY Contracts/Contracts.csproj Contracts/
+COPY OrderService/OrderService.API/OrderService.API.csproj OrderService/OrderService.API/
+COPY OrderService/OrderService.BLL/OrderService.BLL.csproj OrderService/OrderService.BLL/
+COPY OrderService/OrderService.DAL/OrderService.DAL.csproj OrderService/OrderService.DAL/
 
-COPY OrderService.API/OrderService.API.csproj OrderService.API/
-COPY OrderService.BLL/OrderService.BLL.csproj OrderService.BLL/
-COPY OrderService.DAL/OrderService.DAL.csproj OrderService.DAL/
+RUN dotnet restore OrderService/OrderService.API/OrderService.API.csproj
 
-RUN dotnet restore OrderService.API/OrderService.API.csproj
-RUN dotnet restore OrderService.BLL/OrderService.BLL.csproj
-RUN dotnet restore OrderService.DAL/OrderService.DAL.csproj
-COPY . .
+COPY Contracts/ Contracts/
+COPY OrderService/ OrderService/
 
-WORKDIR /src
-RUN dotnet publish OrderService.API/OrderService.API.csproj -c Production -o /app/publish --no-restore
+RUN dotnet publish OrderService/OrderService.API/OrderService.API.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app

@@ -7,26 +7,19 @@
 .env.*
 
 # Build output (rebuilt inside Docker)
-bin/
-obj/
-
 **/bin/
 **/obj/
+
+# Tests
+**/*.Tests/
+
 # IDE
 .vs/
 .vscode/
 .idea/
 *.user
 
-# Frontend (not needed for backend image)
-../fasternfasterapp/
-
-# Docs
-../Faster'n'FasterDocs/
-
-# Claude
-../.claude/
-
 # Docker files themselves
-Dockerfile
-.dockerignore
+**/Dockerfile
+**/.dockerignore
+docker-compose*.yaml

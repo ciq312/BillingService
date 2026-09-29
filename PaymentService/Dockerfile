@@ -1,21 +1,19 @@
+# Build context is the repository root (Contracts is shared between services)
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
+COPY Contracts/Contracts.csproj Contracts/
+COPY PaymentService/PaymentService.API/PaymentService.API.csproj PaymentService/PaymentService.API/
+COPY PaymentService/PaymentService.Application/PaymentService.Application.csproj PaymentService/PaymentService.Application/
+COPY PaymentService/PaymentService.Domain/PaymentService.Domain.csproj PaymentService/PaymentService.Domain/
+COPY PaymentService/PaymentService.Infrastructure/PaymentService.Infrastructure.csproj PaymentService/PaymentService.Infrastructure/
 
-COPY PaymentService.API/PaymentService.API.csproj PaymentService.API/
-COPY PaymentService.Domain/PaymentService.Domain.csproj PaymentService.Domain/
-COPY PaymentService.Infrastructure/PaymentService.Infrastructure.csproj PaymentService.Infrastructure/
-COPY PaymentService.Application/PaymentService.Application.csproj PaymentService.Application/
+RUN dotnet restore PaymentService/PaymentService.API/PaymentService.API.csproj
 
-RUN dotnet restore PaymentService.API/PaymentService.API.csproj
-RUN dotnet restore PaymentService.Domain/PaymentService.Domain.csproj
-RUN dotnet restore PaymentService.Infrastructure/PaymentService.Infrastructure.csproj
-RUN dotnet restore PaymentService.Application/PaymentService.Application.csproj
+COPY Contracts/ Contracts/
+COPY PaymentService/ PaymentService/
 
-COPY . .
-
-WORKDIR /src
-RUN dotnet publish PaymentService.API/PaymentService.API.csproj -c Release -o /app/publish --no-restore
+RUN dotnet publish PaymentService/PaymentService.API/PaymentService.API.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
