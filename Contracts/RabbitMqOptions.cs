@@ -1,4 +1,4 @@
-namespace OrderService.API;
+namespace Contracts;
 
 public sealed class BusOptions
 {

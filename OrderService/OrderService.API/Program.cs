@@ -7,7 +7,7 @@ using OrderService.DAL.Db;
 using OrderService.BLL;
 using OrderService.DAL.Models.Orders;
 using MassTransit;
-using OrderService.API;
+using Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
