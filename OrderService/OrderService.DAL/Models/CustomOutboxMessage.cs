@@ -1,12 +1,12 @@
-namespace OrderService.DAL.Models;
+namespace OrderService.DAL.Models.Outbox;
 
 public class CustomOutboxMessage
 {
     public Guid MessageId {get; set;}
-    public string Type {get; set;}
-    public string Payload {get; set;} 
-    public string Status {get; set;}
-    public string ErrorMessage {get; set;}
+    public required string Type {get; set;}
+    public required string Payload {get; set;} 
+    public OutboxStatus Status {get; set;}
+    public string? ErrorMessage {get; set;}
     public int AttemptCount {get; set;}
     public DateTime? CreatedAt {get; set;}
     public DateTime? ProcessedAt {get; set;} 

@@ -1,6 +1,6 @@
 using OrderService.DAL.Models.Orders;
 
-namespace OrderService.DAL.Db;
+namespace OrderService.DAL.Db.Orders;
 
 public class OrderRepository : IOrderRepository
 {

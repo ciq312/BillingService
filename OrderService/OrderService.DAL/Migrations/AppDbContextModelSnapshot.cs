@@ -35,7 +35,6 @@ namespace OrderService.DAL.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ErrorMessage")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("ParkedAt")
