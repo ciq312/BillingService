@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OrderService.DAL.Models.Outbox;
 
-namespace OrderService.DAL.Db.Outbox;
+namespace OrderService.DAL.Db.Configuration;
 
 public class CustomOutboxMessageConfiguration : IEntityTypeConfiguration<CustomOutboxMessage>
 {
