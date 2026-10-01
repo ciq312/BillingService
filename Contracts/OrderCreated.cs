@@ -1,5 +1,6 @@
 ﻿namespace Contracts;
 
+[MessageType("OrderCreated")]
 public class OrderCreated
 {
     public Guid Id { get; set; }

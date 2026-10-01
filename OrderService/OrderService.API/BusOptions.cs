@@ -1,6 +1,6 @@
 namespace Contracts;
 
-public sealed class BusOptions
+public sealed class BusOptions  
 {
     public const string SectionName = "RabbitMq";
 
