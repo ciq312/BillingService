@@ -15,5 +15,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Order>().
             HasKey(o => o.Id);
 
+        modelBuilder.Entity<CustomOutboxMessage>().
+            HasKey(m => m.MessageId);
+
     }
 }

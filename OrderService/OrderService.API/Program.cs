@@ -9,6 +9,7 @@ using OrderService.DAL.Models.Orders;
 using MassTransit;
 using Contracts;
 using OrderService.API;
+using OrderService.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ builder.Services.AddDbContext<AppDbContext>(optionsAction: (Options) =>
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddHostedService<OutboxMessageProcessor>();
+builder.Services.AddScoped<IOutboxMessagePublisher, OutboxMessagePublisher>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

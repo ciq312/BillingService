@@ -1,9 +1,10 @@
 using MassTransit;
+using MassTransit.DependencyInjection;
 using OrderService.DAL.Db;
 
 namespace OrderService.BLL;
 
-public class OutboxMessageProcessor(IOutboxMessagePublisher outboxMessagePublisher, IPublishEndpoint endpoint) : BackgroundService
+public class OutboxMessageProcessor(IServiceScopeFactory serviceProviderFactory) : BackgroundService
 {
     private const int TickIntervalMs = 200;
     private const int RowsToTake = 10;
@@ -14,9 +15,15 @@ public class OutboxMessageProcessor(IOutboxMessagePublisher outboxMessagePublish
 
         while (await timer.WaitForNextTickAsync(stoppingToken))
         {
-            var messages = await outboxMessagePublisher.GetFirstMessages(RowsToTake);
+            using (var scope = serviceProviderFactory.CreateAsyncScope()) {
+                IOutboxMessagePublisher outboxMessagePublisher = scope.ServiceProvider.GetRequiredService<IOutboxMessagePublisher>();
+                IPublishEndpoint endpoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
+                
+                var messages = await outboxMessagePublisher.GetFirstMessages(RowsToTake);
 
-            await endpoint.PublishBatch(messages);
+                await endpoint.PublishBatch(messages);    
+            }
+            
         }
         
     }
