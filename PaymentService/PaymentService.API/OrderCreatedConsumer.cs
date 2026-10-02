@@ -1,14 +1,20 @@
-using System.Runtime.InteropServices.Marshalling;
 using Contracts;
 using MassTransit;
+using PaymentService.Application;
 
 namespace PaymentService.API;
 
-class OrderCreatedConsumer : IConsumer<OrderCreated>
+class OrderCreatedConsumer(PaymentManager paymentManager) : IConsumer<OrderCreated>
 {
     public async Task Consume(ConsumeContext<OrderCreated> context)
     {
         OrderCreated msg = context.Message;
-        Console.WriteLine($"Received message: {msg.Id}, {msg.BuyerId}, {msg.CreatedAt}, {msg.TotalPrice}");
+
+        await paymentManager.CreatePayment(new CreatePaymentCommand
+        {
+            OrderId = msg.Id,
+            BuyerId = msg.BuyerId,
+            Amount = msg.TotalPrice
+        }, context.CancellationToken);
     }
 }

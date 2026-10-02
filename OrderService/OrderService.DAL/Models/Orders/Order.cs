@@ -15,6 +15,7 @@ public class Order : Entity<Guid>
         TotalPrice = totalPrice;
         BuyerId = buyerId;
         State = OrderState.Pending;
+        CreatedAt = DateTime.UtcNow;
     }
 
     private Order()

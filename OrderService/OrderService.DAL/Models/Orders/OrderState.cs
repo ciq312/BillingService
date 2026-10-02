@@ -2,7 +2,7 @@ namespace OrderService.DAL.Models.Orders;
 
 public enum OrderState
 {
-    Paid = 0,
-    Pending = 1,
+    Pending = 0,
+    Paid = 1,
     Canceled = 2
 }

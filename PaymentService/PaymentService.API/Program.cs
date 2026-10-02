@@ -1,10 +1,9 @@
 using Contracts;
 using MassTransit;
-using MassTransit.Configuration;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.EntityFrameworkCore;
 using PaymentService.API;
+using PaymentService.Application;
+using PaymentService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,10 +22,19 @@ builder.Services.AddMassTransit(bus =>
         {
             h.Username(rabbit?.Username);
             h.Password(rabbit?.Password);
-            cfg.ConfigureEndpoints(context);
         });
+        cfg.UseConsumeFilter(typeof(InboxFilter<>), context);
+        cfg.ConfigureEndpoints(context);
     });
 });
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<PaymentManager>();
+builder.Services.AddDbContext<AppDbContext>(optionsAction: (Options) =>
+{
+    Options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -34,7 +42,12 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
 app.MapGet("/api/health", () => Results.Ok("healthy"));
 
 app.Run();
-

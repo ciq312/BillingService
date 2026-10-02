@@ -44,7 +44,7 @@ public class OrderManager
         messageRepository.Add(new CustomOutboxMessage
         {
             CreatedAt = DateTime.UtcNow,
-            MessageId = Guid.NewGuid(),
+            MessageId = Guid.CreateVersion7(),
             AttemptCount = 0,
             Type = messageTypeName.MessageTypeName,
             Status = OutboxStatus.Pending,
