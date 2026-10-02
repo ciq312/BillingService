@@ -24,10 +24,13 @@ services:
     ports:
       - 8080:8080
     environment:
+      - ConnectionStrings__DefaultConnection=Host=paymentDb;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - RabbitMq__Host=broker
       - RabbitMq__Username=${RABBITMQ_USER}
       - RabbitMq__Password=${RABBITMQ_PASS}
     depends_on:
+      paymentDb:
+        condition: service_healthy
       broker:
         condition: service_healthy
   broker:
@@ -56,6 +59,11 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   orderDb:
     image: postgres:15
     volumes:

@@ -23,6 +23,7 @@ builder.Services.AddMassTransit(bus =>
             h.Username(rabbit?.Username);
             h.Password(rabbit?.Password);
         });
+        cfg.UseMessageRetry(r => r.Intervals(100, 500, 1000));
         cfg.UseConsumeFilter(typeof(InboxFilter<>), context);
         cfg.ConfigureEndpoints(context);
     });

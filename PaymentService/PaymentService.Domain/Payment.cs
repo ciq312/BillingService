@@ -25,9 +25,9 @@ public class Payment
         TransitionTo(PaymentStatus.Processing);
     }
 
-    public void MarkSucceded()
+    public void MarkSucceeded()
     {
-        TransitionTo(PaymentStatus.Succeded);
+        TransitionTo(PaymentStatus.Succeeded);
     }
 
     public void MarkFailed()
@@ -45,7 +45,7 @@ public class Payment
         return (Status, newState) switch
         {
             (PaymentStatus.Pending, PaymentStatus.Processing) => true,
-            (PaymentStatus.Processing, PaymentStatus.Succeded) => true,
+            (PaymentStatus.Processing, PaymentStatus.Succeeded) => true,
             (PaymentStatus.Processing, PaymentStatus.Failed) => true,
             (PaymentStatus.Processing, PaymentStatus.Canceled) => true,
             _ => false
