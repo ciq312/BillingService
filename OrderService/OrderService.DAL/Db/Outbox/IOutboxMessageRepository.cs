@@ -8,5 +8,5 @@ public interface IOutboxMessageRepository
 
     void Update(CustomOutboxMessage message);
 
-    Task<List<CustomOutboxMessage>> GetFirstMessages(int batchSize);
+    Task<List<CustomOutboxMessage>> GetFirstMessages(int batchSize, CancellationToken ct);
 }

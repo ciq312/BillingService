@@ -10,6 +10,8 @@ using MassTransit;
 using Contracts;
 using OrderService.API;
 using OrderService.DAL;
+using OrderService.DAL.Db.Orders;
+using OrderService.DAL.Db.Outbox;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,7 @@ builder.Services.AddDbContext<AppDbContext>(optionsAction: (Options) =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddHostedService<OutboxMessageProcessor>();
-builder.Services.AddScoped<IOutboxMessagePublisher, OutboxMessagePublisher>();
+builder.Services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

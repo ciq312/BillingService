@@ -1,6 +1,9 @@
+using System.Text.Json;
+using Contracts;
 using MassTransit;
-using MassTransit.DependencyInjection;
 using OrderService.DAL.Db;
+using OrderService.DAL.Db.Outbox;
+using OrderService.DAL.Models.Outbox;
 
 namespace OrderService.BLL;
 
@@ -16,12 +19,23 @@ public class OutboxMessageProcessor(IServiceScopeFactory serviceProviderFactory)
         while (await timer.WaitForNextTickAsync(stoppingToken))
         {
             using (var scope = serviceProviderFactory.CreateAsyncScope()) {
-                IOutboxMessagePublisher outboxMessagePublisher = scope.ServiceProvider.GetRequiredService<IOutboxMessagePublisher>();
+                IOutboxMessageRepository outboxMessageRepository = scope.ServiceProvider.GetRequiredService<IOutboxMessageRepository>();
                 IPublishEndpoint endpoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
-                
-                var messages = await outboxMessagePublisher.GetFirstMessages(RowsToTake);
+                IUnitOfWork unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+                var outboxMessages = await outboxMessageRepository.GetFirstMessages(RowsToTake, stoppingToken);
+
+                var messages = outboxMessages.Select(m => JsonSerializer.Deserialize<OrderCreated>(m.Payload)!);
 
                 await endpoint.PublishBatch(messages);    
+
+                foreach (var outboxMessage in outboxMessages)
+                {
+                    outboxMessage.ProcessedAt = DateTime.UtcNow;
+                    outboxMessage.Status = OutboxStatus.Processed;
+                }
+                
+                await unitOfWork.SaveChangesAsync(ct: default);
             }
             
         }

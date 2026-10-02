@@ -8,7 +8,8 @@ public class CustomOutboxMessage
     public OutboxStatus Status {get; set;}
     public string? ErrorMessage {get; set;}
     public int AttemptCount {get; set;}
-    public DateTime? CreatedAt {get; set;}
+    public DateTime CreatedAt {get; set;}
+    public DateTime? NextAttemptAt {get; set;}
     public DateTime? ProcessedAt {get; set;} 
     public DateTime? ParkedAt {get; set;}
 }

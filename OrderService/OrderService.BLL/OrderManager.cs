@@ -1,11 +1,11 @@
 using System.Reflection;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Contracts;
-using MassTransit;
 using OrderService.DAL.Db;
-using OrderService.DAL.Models;
+using OrderService.DAL.Db.Orders;
+using OrderService.DAL.Db.Outbox;
 using OrderService.DAL.Models.Orders;
+using OrderService.DAL.Models.Outbox;
 
 namespace OrderService.BLL;
 
@@ -13,13 +13,13 @@ public class OrderManager
 {
     private readonly IUnitOfWork unitOfWork;
     private readonly IOrderRepository repository;
-    private readonly IOutboxMessagePublisher messagePublisher;
+    private readonly IOutboxMessageRepository messageRepository;
 
-    public OrderManager(IUnitOfWork unitOfWork, IOrderRepository repository, IOutboxMessagePublisher messagePublisher)
+    public OrderManager(IUnitOfWork unitOfWork, IOrderRepository repository, IOutboxMessageRepository messageRepository)
     {
         this.unitOfWork = unitOfWork;
         this.repository = repository;
-        this.messagePublisher = messagePublisher;
+        this.messageRepository = messageRepository;
     }
 
     public async Task<Order> CreateOrderAsync(CreateNewOrderDTO dto, CancellationToken ct)
@@ -40,14 +40,14 @@ public class OrderManager
         };
 
         repository.Add(order);
-
-        messagePublisher.Publish(new CustomOutboxMessage
+        
+        messageRepository.Add(new CustomOutboxMessage
         {
             CreatedAt = DateTime.UtcNow,
             MessageId = Guid.NewGuid(),
-            AttemptCount = 1,
+            AttemptCount = 0,
             Type = messageTypeName.MessageTypeName,
-            Status = "pending",
+            Status = OutboxStatus.Pending,
             Payload = JsonSerializer.Serialize(message)
         }
         );
