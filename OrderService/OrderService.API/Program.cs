@@ -48,6 +48,7 @@ builder.Services.AddMassTransit(bus =>
 var registry = new MessageTypeRegistry();
 registry.Build(typeof(ContractsAssemblyMarker).Assembly);
 
+builder.Services.AddSingleton(registry);
 
 var app = builder.Build();
 

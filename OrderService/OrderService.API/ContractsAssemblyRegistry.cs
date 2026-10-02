@@ -6,7 +6,7 @@ namespace OrderService.API;
 
 public class MessageTypeRegistry
 {
-    public Dictionary<string, Type> MsgTypeNames {get; private set; } = new Dictionary<string, Type>();
+    private Dictionary<string, Type> MsgTypeNames {get;  set; } = new Dictionary<string, Type>();
     public IReadOnlyDictionary<string, Type> GetMsgTypeNames() => MsgTypeNames.AsReadOnly();
 
     public void Build(Assembly contracts)

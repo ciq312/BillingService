@@ -7,8 +7,10 @@ public class OutboxMessageRepository(AppDbContext dbContext) : IOutboxMessageRep
 {
     public async Task<List<CustomOutboxMessage>> GetFirstMessages(int batchSize, CancellationToken ct)
     {
+        var now = DateTime.UtcNow;
         return await dbContext.OutboxMessages
             .Where(m => m.Status == OutboxStatus.Pending)
+            .Where(m => m.NextAttemptAt == null || m.NextAttemptAt <= now)
             .OrderBy(m => m.CreatedAt)
             .Take(batchSize)
             .ToListAsync(ct);
